@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, redirect, request, render_template, url_for
 from uuid import uuid4
-from .commit_get import commit_db, get_db, set_db
+from .commit_get import *
 
 views = Blueprint("views", __name__)
 
@@ -21,7 +21,47 @@ def rav():
 
 @views.route("/stock", methods=["POST", "GET"])
 def stock():
-    return render_template("stock.html", stock="active")
+    cat = get_cat()
+    fab = get_fab()
+    if request.method=="GET":
+        product_list = get_db("produit", ["all"])
+        parsed  = [{"name":i.name, 
+                    "fab":get_by_id("fabricant", i.fabricant_id), 
+                    "category":get_by_id("category", i.category_id), 
+                    "cbar":i.cbar, "prix":i.final_price, "qty":i.qty} for i in product_list]
+        
+        return render_template("stock.html", stock="active", product=parsed, category_list=cat, fabricant_list=fab)
+    else: 
+        category = request.form.get("category")
+        fabricant= request.form.get("fabricant")
+        if not category and not fabricant:
+            return redirect(url_for("views.stock"))
+        elif category and fabricant:
+            product_list = get_product_by_cat_fab(int(fabricant), int(category))
+            parsed  = [{"name":i.name, 
+                    "fab":get_by_id("fabricant", i.fabricant_id), 
+                    "category":get_by_id("category", i.category_id), 
+                    "cbar":i.cbar, "prix":i.final_price, "qty":i.qty} for i in product_list]
+            return render_template("stock.html", stock="active", product=parsed, category_list=cat, fabricant_list=fab)
+        elif fabricant:
+            product_list = get_product_by_fab(int(fabricant))
+            parsed  = [{"name":i.name, 
+                    "fab":get_by_id("fabricant", i.fabricant_id), 
+                    "category":get_by_id("category", i.category_id), 
+                    "cbar":i.cbar, "prix":i.final_price, "qty":i.qty} for i in product_list]
+            return render_template("stock.html", stock="active", product=parsed, category_list=cat, fabricant_list=fab)
+        elif category:
+            product_list = get_product_by_cat(int(category))
+            parsed  = [{"name":i.name, 
+                    "fab":get_by_id("fabricant", i.fabricant_id), 
+                    "category":get_by_id("category", i.category_id), 
+                    "cbar":i.cbar, "prix":i.final_price, "qty":i.qty} for i in product_list]
+            return render_template("stock.html", stock="active", product=parsed, category_list=cat, fabricant_list=fab)
+
+        
+
+        return render_template("stock.html", stock="active", product=parsed, category_list=cat, fabricant_list=fab)
+
 
 @views.route("/finance", methods=["POST", "GET"])
 def finance():
@@ -37,7 +77,7 @@ def add(element):
             qty  = request.form.get("qty")
             entry_price  = request.form.get("entry_price") 
             final_price  = request.form.get("final_price") 
-            discript  = request.form.get("discript") 
+            discript = request.form.get("discript") 
             category = request.form.get("category")
             fabricant= request.form.get("fabricant")
             

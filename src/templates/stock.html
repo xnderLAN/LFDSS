@@ -4,7 +4,47 @@
 
 <div class="row mb-3">
     <div class="col-1 themed-grid-col"></div>
-    <div class="col-10 themed-grid-col"> </div>
+    <div class="col-10 themed-grid-col">
+      <hr class="my-4">
+      <div class="col-md-7 col-lg-12">
+          <h4 class="mb-3">Produits</h4>
+          <form action="/stock" method="POST" class="needs-validation" novalidate="">
+            <div class="row g-3">
+              
+              <div class="col-md-4">
+                <label for="country" class="form-label">Fabricant</label>
+                <select class="form-select" name="fabricant"required="">
+                  <option value="">Choisissez...</option>
+                  {% for i in fabricant_list %}
+                  <option value="{{ i['id'] }}">{{ i['name'] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+      
+              <div class="col-md-4">
+                <label for="state" class="form-label">Categorie</label>
+                <select class="form-select" name="category" required="">
+                  <option value="">Choisissez...</option>
+                  {% for y in category_list %}
+                  <option value="{{ y['id'] }}"> {{ y['name'] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              <div class="col-md-4">
+                <label for="country" class="form-label"><br></label>
+              <button class=" w-100 btn btn-primary " type="submit">Filtrer Les Produits</button>
+            </div>
+    
+            </div>
+      
+            <hr class="my-4">
+            
+          </form>
+        </div>
+      
+
+  </div>
     <div class="col-1 themed-grid-col"></div>
   </div>
   <div class="b-example-divider"></div>
@@ -14,7 +54,31 @@
 
 
     <div class="col-10 themed-grid-col">
-        <hr class="my-4">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Produit</th>
+            <th scope="col">Fabriquant</th>
+            <th scope="col">Categorie</th>
+            <th scope="col">Code barre</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Quantité</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% for prod in product %}
+          <tr>
+            <th>{{ prod['name'] }}</th>
+            <td>{{ prod['fab'] }}</td>
+            <td>{{ prod['category'] }}</td>
+            <td>{{ prod['cbar'] }}</td>
+            <td>{{ prod['prix'] }}</td>
+            <td>{{ prod['qty'] }}</td>
+          </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
         <div class="col-md-7 col-lg-12"></div>
     </div>
     <div class="col-1 themed-grid-col"></div>

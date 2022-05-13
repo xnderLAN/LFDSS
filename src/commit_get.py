@@ -39,8 +39,33 @@ def get_db(item, values):
 
     elif item == "produit":
         if values[0]== "all":
-            pass
+            return db.session.query(Product).all()
+            
         else:
             return db.session.query(Product).filter(Product.cbar==values[0]).all()[0]
 def set_db(item, values):
     pass
+def get_product_by_cat(cat_id):
+    return db.session.query(Product).filter(Product.category_id==cat_id).all()
+
+def get_cat():
+    return [ {"id":i.id, "name":i.name} for i in db.session.query(Category).all() ]
+def get_fab():
+    return [ {"id":i.id, "name":i.name} for i in db.session.query(Fabricant).all() ]
+
+def get_by_id(item, id):
+    if item == "fabricant":
+        return db.session.query(Fabricant).filter(Fabricant.id==id).all()[0].name
+
+    if item == "category":
+        return db.session.query(Category).filter(Category.id==id).all()[0].name
+
+def get_product_by_cat(id_cat):
+    return [ i for i in db.session.query(Product).filter(Product.category_id==id_cat).all()]
+
+def get_product_by_fab(id_fab):
+    return [ i for i in db.session.query(Product).filter(Product.fabricant_id==id_fab).all()]
+    
+def get_product_by_cat_fab(id_fab, id_cat):
+    return [ i for i in db.session.query(Product).filter(Product.category_id==id_cat, Product.fabricant_id==id_fab ).all()]
+ 
