@@ -1,7 +1,8 @@
 ### Merge DataBases
 ```bash
 cd LFDSS
-python3```
+python3
+```
 
 
 ```python
