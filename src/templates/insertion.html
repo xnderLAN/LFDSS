@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block main %}  
+
+
+<div class="row mb-3">
+    <div class="col-1 themed-grid-col"></div>
+    <div class="col-10 themed-grid-col">
+        <hr class="my-4">
+        <div class="col-md-7 col-lg-12">
+            <h4 class="mb-3">Nouveau Produit</h4>
+            <form action="/add/product" method="POST" class="needs-validation" novalidate="">
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <label for="firstName" class="form-label">Nom du produit</label>
+                  <input type="text" class="form-control" name="name" id="firstName" placeholder="" value="" required="">
+                  <div class="invalid-feedback">
+                    Nom du produit est obligatoir.
+                  </div>
+                </div>
+        
+                <div class="col-sm-6">
+                  <label for="lastName" class="form-label">Code Barre</label>
+                  <input type="text" class="form-control" name="c_bar" id="lastName" placeholder="" value="" required="">
+                  <div class="invalid-feedback">
+                    Le code barre du produit est obligatoir.
+                  </div>
+                </div>
+        
+                <div class="col-12">
+                  <label for="username" class="form-label">Dscription</label>
+                  <div class="input-group has-validation">
+                    <span class="input-group-text">@</span>
+                    <input type="text" class="form-control" name="discript" id="username" placeholder="Dscription breve du produit" required="">
+                  </div>
+                </div>
+        
+                <div class="col-md-3">
+                  <label for="country" class="form-label">Fabricant</label>
+                  <select class="form-select" name="fabricant" id="country" required="">
+                    <option value="">Choisissez...</option>
+                    {% for i in fab %}
+                    <option>{{i}}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a valid country.
+                  </div>
+                </div>
+        
+                <div class="col-md-3">
+                  <label for="state" class="form-label">Categorie</label>
+                  <select class="form-select" name="category" id="state" required="">
+                    <option value="">Choisissez...</option>
+                    {% for i in cat %}
+                    <option>{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+        
+                <div class="col-md-2">
+                  <label for="zip" class="form-label">Quantité</label>
+                  <input type="text" name="qty" class="form-control" id="zip" placeholder="" required="">
+                  <div class="invalid-feedback">
+                    La quantité est requise.
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="zip"  class="form-label">Prix de gors</label>
+                    <input type="text" name="entry_price" class="form-control" id="zip" placeholder="DZD" required="">
+                    <div class="invalid-feedback">
+                      Le prix de gros requis.
+                    </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <label for="zip" class="form-label">Prix Unitaire</label>
+                    <input type="text" name="final_price" class="form-control" id="zip" placeholder="DZD" required="">
+                    <div class="invalid-feedback">
+                      Le prix unitaire est requis.
+                    </div>
+                  </div>
+              </div>
+        
+              <hr class="my-4">
+              <button class="w-100 btn btn-primary btn-lg" type="submit">Ajouter Le Produit</button>
+              
+            </form>
+          </div>
+        
+
+    </div>
+    <div class="col-1 themed-grid-col"></div>
+  </div>
+  <div class="b-example-divider"></div>
+
+  <div class="row mb-3">
+    <div class="col-1 themed-grid-col"></div>
+
+
+    <div class="col-10 themed-grid-col">
+        <hr class="my-4">
+        <div class="col-md-7 col-lg-12">
+            <h4 class="mb-3">Nouvelle Categorie</h4>
+            <form action="/add/category" method="POST" class="needs-validation" novalidate="">
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <label for="firstName" class="form-label">Nom de la Categorie</label>
+                  <input type="text" name="name" class="form-control" id="firstName" placeholder="" value="" required="">
+                  <div class="invalid-feedback">
+                    Nom de la Categorie est obligatoir.
+                  </div>
+                </div>
+        
+        
+                <div class="col-6">
+                  <label for="username" class="form-label">Dscription</label>
+                  <div class="input-group has-validation">
+                    <span class="input-group-text">@</span>
+                    <input type="text" name="discript" class="form-control" id="username" placeholder="Dscription breve de la Categorie" required="">
+                  </div>
+                </div>
+        
+              
+              <button class="w-100 btn btn-primary btn-lg" type="submit">Ajouter La Categorie</button>
+              
+            </form>
+            <hr class="my-4">
+          </div>
+
+
+          <div class="col-md-7 col-lg-12">
+            <h4 class="mb-3">Nouveau Fabricant</h4>
+            <form action="/add/fabricant" method="POST" class="needs-validation" novalidate="">
+              <div class="row g-3">
+                <div class="col-sm-12">
+                  <label for="firstName" class="form-label">Nom de la Marque</label>
+                  <input type="text" name="name" class="form-control" id="firstName" placeholder="" value="" required="">
+                  <div class="invalid-feedback">
+                    Nom de la Categorie est obligatoir.
+                  </div>
+                </div>
+              <button class="w-100 btn btn-primary btn-lg" type="submit">Ajouter La Categorie</button>
+              
+            </form>
+            <hr class="my-4">
+          </div>
+    </div>
+
+    
+    
+
+
+    <div class="col-1 themed-grid-col"></div>
+  </div>
+
+{% endblock %}
