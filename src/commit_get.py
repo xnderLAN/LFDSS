@@ -22,7 +22,10 @@ def commit_db(item, values):
         db.session.commit()
 
     elif item == "order":
-        pass
+        o = Order(ref=values[0], price=values[1], products=values[2])
+        db.session.add(o)
+        db.session.commit()
+        return "ok"
 
 def get_db(item, values):
     if item == "category":
@@ -43,8 +46,26 @@ def get_db(item, values):
             
         else:
             return db.session.query(Product).filter(Product.cbar==values[0]).all()[0]
-def set_db(item, values):
-    pass
+
+def get_product_by_cbar(cbar):
+    try:
+        return db.session.query(Product).filter(Product.cbar==cbar).all()[0]
+    except:
+        return False
+
+def set_db(product):
+
+    for key in product.keys():
+        try:
+            p = db.session.query(Product).filter(Product.name==key).all()[0]
+        except:
+            return False
+        if int(p.qty) > int(product[key]):
+            p.qty = int(p.qty) - int(product[key])
+            db.session.commit()
+    return True
+
+
 def get_product_by_cat(cat_id):
     return db.session.query(Product).filter(Product.category_id==cat_id).all()
 

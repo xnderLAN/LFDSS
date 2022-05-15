@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, redirect, request, render_template, url_for
 from uuid import uuid4
+
+from sqlalchemy import false
 from .commit_get import *
 
 views = Blueprint("views", __name__)
@@ -17,7 +19,7 @@ def insertion():
 
 @views.route("/ravitaillement", methods=["POST", "GET"])
 def rav():
-    return "rav"
+    return render_template("rav.html", rav="active")
 
 @views.route("/stock", methods=["POST", "GET"])
 def stock():
@@ -65,7 +67,7 @@ def stock():
 
 @views.route("/finance", methods=["POST", "GET"])
 def finance():
-    return "Finance"
+    return render_template("finance.html", finance="active")
 
 @views.route("/add/<element>", methods=["POST"])
 def add(element):
@@ -104,11 +106,24 @@ def add(element):
 
 @views.route("/get", methods=["POST"])
 def get_item():
-    rep = request.json["c_bar"]
-    product = get_db("produit", [rep])
-    data = {"name": product.name, "prix": product.final_price}
-    return jsonify(data)
+    rep = request.json
+    if "c_bar" in rep.keys():
+        product = get_product_by_cbar(rep["c_bar"])
+        if product:
+            data = {"name": product.name, "prix": product.final_price}
+            return jsonify(data)
+    return jsonify({"error":"True"})
 
-@views.route("/req")
-def req():
-    return render_template("sc.html")
+@views.route("/order", methods=['POST'])
+def order():
+    data = request.json
+    if "product" in data.keys():
+        product = data["product"]
+        if len(product):
+            st_set = set_db(product)
+            if st_set:
+                st_commit = commit_db("order", [data["or_id"], data["order_price"], str(data["product"])])
+                return jsonify({"error":"False"})
+
+    return jsonify({"error":"True"})
+
